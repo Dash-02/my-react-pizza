@@ -46,6 +46,7 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
           price: activePrice,
         };
       }
+      return el;
       //}
     });
     dispatch(
@@ -54,7 +55,7 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
       // setPrice(activePrice)
       setPizzas(items)
     );
-  }, [pizzas]);
+  }, [activeType, activeSize, activePrice]);
 
   // const handlerActiveType = () => {
   //   let type;

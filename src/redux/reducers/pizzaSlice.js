@@ -29,4 +29,4 @@ const pizzaSlice = createSlice({
 })
 
 export const {setSize, setType, setPrice, setPizzas} = pizzaSlice.actions
-export default pizzaSlice.reducer
+export default pizzaSlice.reducer     
