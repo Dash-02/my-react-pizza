@@ -5,6 +5,7 @@ const initialState = {
 	{
 		index: null,
     	counter: 0,
+		// counterPrice: 0,
 	}
   ]
 }

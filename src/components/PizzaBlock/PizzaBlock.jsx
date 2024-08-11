@@ -19,11 +19,19 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
   const dispatch = useDispatch();
-
+  // let counterPrices = 0;
   const handlerIncrement = () => {
     const counters = pizzasBlock.map((el) => {
       if (el.index === id) {
-        return { ...el, counter: el.counter + 1 };
+        // counterPrices += activePrice;
+        // console.log("counter price ", el.counterPrice);
+        // console.log(el.counter);
+        // console.log("let ", counterPrices);
+        return {
+          ...el,
+          counter: el.counter + 1,
+          // counterPrice: activePrice,
+        };
       } else {
         return el;
       }
@@ -34,56 +42,45 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
   useEffect(() => {
     // let sizeItem, typeItem, priceItem;
     const items = pizzasBlock.map((el) => {
-      //if (el.index === id) {
-      // el.type = activeType;
-      // el.size = activeSize;
-      // el.price = activePrice;
       if (el.index === id) {
         return {
-          index: el.id,
+          index: id,
           type: activeType,
           size: activeSize,
           price: activePrice,
         };
+        // } else if (el.index == null) {
+        //   return {
+        //     // index: pizzas.id,
+        //     // type: pizzas.type,
+        //     // size: pizzas.size,
+        //     // price: pizzas.price,
+        //     index: id,
+        //     type: activeType,
+        //     size: activeSize,
+        //     price: activePrice,
+        //   };
+      } else {
+        return {};
+        // return {
+        //   // index: items.id,
+        //   // type: items.type,
+        //   // size: items.size,
+        //   // price: items.price,
+
+        //   index: id,
+        //   type: activeType,
+        //   size: activeSize,
+        //   price: activePrice,
+        // };
       }
-      return el;
-      //}
     });
-    dispatch(
-      // setSize(activeSize),
-      // setType(activeType),
-      // setPrice(activePrice)
-      setPizzas(items)
-    );
-  }, [activeType, activeSize, activePrice]);
-
-  // const handlerActiveType = () => {
-  //   let type;
-  //   const typesArr = types.map((el) => {
-  //     type = el;
-  //     //return el;
-  //   });
-  //   setActiveType(type);
-  //   console.log("type ", type);
-  //   // dispatch(setType(types));
-  // };
-
-  // useEffect(() => {
-  //   // const handlerActiveType = () => {
-  //   let type;
-  //   const typesArr = types.map((el) => {
-  //     type = el;
-  //     //return el;
-  //   });
-  //   setActiveType(type);
-  //   console.log("type ", type);
-  //   // dispatch(setType(types));
-  //   // };
-  // }, [activeType]);
-  // useEffect(() => {
-  //   dispatch(setSize(activeSize), setType(activeType), setPrice(activePrice));
+    console.log("i ", items);
+    dispatch(setPizzas(items));
+  }, [pizzasBlock]);
   // }, [activeType, activeSize, activePrice]);
-  console.log(pizzas);
+
+  // console.log(pizzas);
 
   useEffect(() => {
     setActivePrice(prices[activeSize]);
@@ -119,20 +116,7 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">
-            {/* {prices.map((el) => {
-              // if (prices.indexOf(el) === activeSize) {
-
-              // }
-              // let cost = prices[activeSize];
-              console.log("prices[activeSize] ", prices[activeSize]);
-            })} */}
-            {/* { if (activeSize) {
-              
-            }
-            setActivePrice(prices[activeSize])} */}
-            {activePrice} ₽
-          </div>
+          <div className="pizza-block__price">{activePrice} ₽</div>
           <button
             onClick={handlerIncrement}
             className="button button--outline button--add"

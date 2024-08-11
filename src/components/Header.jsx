@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 
 function Header() {
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
+  const { pizzas } = useSelector((state) => state.pizzaSlice);
   let [sumCount, setSumCount] = useState(0);
+  let [sumPrice, setSumPrice] = useState(0);
   useEffect(() => {
     let sum = 0;
     let sumCost = 0;
@@ -16,6 +18,20 @@ function Header() {
     });
     setSumCount(sum);
   }, [pizzasBlock]);
+
+  useEffect(() => {
+    let sumP = 0;
+    console.log("p ", pizzas);
+    if (pizzas.length >= 0) {
+      const pricesCart = pizzas.map((el) => {
+        console.log(el.price);
+        sumP = sumP + el.price;
+        return sumP;
+      });
+      setSumPrice(sumP);
+    }
+  }, [pizzas]);
+
   return (
     <div className="header">
       <div className="container">
@@ -30,7 +46,7 @@ function Header() {
         </Link>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>{sumPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"

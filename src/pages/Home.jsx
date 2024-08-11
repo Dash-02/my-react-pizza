@@ -23,7 +23,7 @@ function Home() {
   React.useEffect(() => {
     dispatch(fetchPizza());
   }, []);
-  console.log(data, status);
+  // console.log(data, status);
 
   useEffect(() => {
     if (!data) {
