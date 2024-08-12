@@ -5,6 +5,8 @@ const initialState = {
 	{
 		index: null,
     	counter: 0,
+			size: [],
+			price: [],
 		// counterPrice: 0,
 	}
   ]

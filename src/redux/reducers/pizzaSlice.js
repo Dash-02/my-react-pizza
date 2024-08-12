@@ -3,9 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 	pizzas: [{
         index: null,
-        size: 0,
-        type: 0,
-        price: 0,
+        size: [],
+        type: [],
+        price: [],
     }]
 }
 
@@ -29,4 +29,4 @@ const pizzaSlice = createSlice({
 })
 
 export const {setSize, setType, setPrice, setPizzas} = pizzaSlice.actions
-export default pizzaSlice.reducer     
+export default pizzaSlice.reducer

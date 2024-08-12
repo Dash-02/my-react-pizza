@@ -23,64 +23,92 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
   const handlerIncrement = () => {
     const counters = pizzasBlock.map((el) => {
       if (el.index === id) {
-        // counterPrices += activePrice;
-        // console.log("counter price ", el.counterPrice);
-        // console.log(el.counter);
-        // console.log("let ", counterPrices);
         return {
           ...el,
           counter: el.counter + 1,
-          // counterPrice: activePrice,
         };
       } else {
         return el;
       }
     });
+    let items = [];
+
+    console.log("pizzas", pizzas);
+    if (pizzas.length === 1) {
+      items = counters.map((el) => {
+        return {
+          ...el,
+          index: el.index,
+          counter: el.counter,
+          type: [],
+          size: [],
+          price: [],
+        };
+      });
+    }
+    if (pizzas.length > 1) {
+      items = pizzas;
+    }
+
+    console.log("items", items);
+    let newVar = items.map((el) => {
+      // if (el.type.length >= 1) {
+      //   el.type = pizzas.type;
+      //   console.log("gh");
+      // } else if (el.index === id) {
+      if (el.index === id) {
+        return {
+          ...el,
+          type: [activeType],
+          size: [activeSize],
+          price: [activePrice],
+        };
+      } else {
+        return el;
+      }
+    });
+
+    console.log("newVar", newVar);
+    dispatch(setPizzas(newVar));
+
     dispatch(setPizzaBlock(counters));
   };
 
-  useEffect(() => {
-    // let sizeItem, typeItem, priceItem;
-    const items = pizzasBlock.map((el) => {
-      if (el.index === id) {
-        return {
-          index: id,
-          type: activeType,
-          size: activeSize,
-          price: activePrice,
-        };
-        // } else if (el.index == null) {
-        //   return {
-        //     // index: pizzas.id,
-        //     // type: pizzas.type,
-        //     // size: pizzas.size,
-        //     // price: pizzas.price,
-        //     index: id,
-        //     type: activeType,
-        //     size: activeSize,
-        //     price: activePrice,
-        //   };
-      } else {
-        return {};
-        // return {
-        //   // index: items.id,
-        //   // type: items.type,
-        //   // size: items.size,
-        //   // price: items.price,
-
-        //   index: id,
-        //   type: activeType,
-        //   size: activeSize,
-        //   price: activePrice,
-        // };
-      }
-    });
-    console.log("i ", items);
-    dispatch(setPizzas(items));
-  }, [pizzasBlock]);
+  // const pizz = [{ index: null, type: 0, size: 0, price: 0 }];
+  // useEffect(() => {
+  //   // let indexItem, sizeItem, typeItem, priceItem;
+  //   let items = [];
+  //   console.log(pizzas.length);
+  //   console.log(pizzas);
+  //   if (pizzas.length <= 1) {
+  //     items = pizzasBlock.map((el) => {
+  //       if (el.index === id) {
+  //         return {
+  //           index: id,
+  //           type: activeType,
+  //           size: activeSize,
+  //           price: activePrice,
+  //         };
+  //       }
+  //     });
+  //   }
+  //   console.log("items", items);
+  //   // } else {
+  //   //   items = pizzas.map((el) => {
+  //   //     return {
+  //   //       index: el.id,
+  //   //       type: activeType,
+  //   //       size: activeSize,
+  //   //       price: activePrice,
+  //   //     };
+  //   //   });
+  //   // }
+  //   // console.log("items ", items);
+  //   //dispatch(setPizzas(items));
+  // }, [pizzasBlock]);
   // }, [activeType, activeSize, activePrice]);
 
-  // console.log(pizzas);
+  // console.log("pizzOut ", pizz);
 
   useEffect(() => {
     setActivePrice(prices[activeSize]);

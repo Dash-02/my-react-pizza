@@ -21,10 +21,13 @@ function Header() {
 
   useEffect(() => {
     let sumP = 0;
-    console.log("p ", pizzas);
+    // console.log("p ", pizzas);
     if (pizzas.length >= 0) {
       const pricesCart = pizzas.map((el) => {
-        console.log(el.price);
+        console.log("el.price ", el.price);
+        if (el.price) {
+          // console.log("e ", el.price[el.size], el.price);
+        }
         sumP = sumP + el.price;
         return sumP;
       });
