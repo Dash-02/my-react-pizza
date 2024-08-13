@@ -52,11 +52,14 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
 
     console.log("items", items);
     let newVar = items.map((el) => {
-      // if (el.type.length >= 1) {
-      //   el.type = pizzas.type;
-      //   console.log("gh");
-      // } else if (el.index === id) {
-      if (el.index === id) {
+      if (el.type.length >= 1 || el.size.length >= 1) {
+        return {
+          ...el,
+          type: [...pizzas[0].type, activeType],
+          size: [...pizzas[0].size, activeSize],
+          price: [...pizzas[0].price, activePrice],
+        };
+      } else if (el.index === id) {
         return {
           ...el,
           type: [activeType],

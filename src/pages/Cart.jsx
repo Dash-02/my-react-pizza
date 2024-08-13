@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import imgTrash from "../assets/img/trash.svg";
 
 function Cart() {
+  let [sumPrice, setSumPrice] = useState(0);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
   const [sumCount, setSumCount] = useState(0);
@@ -16,6 +17,19 @@ function Cart() {
     });
     setSumCount(sum);
   }, [pizzasBlock]);
+
+  useEffect(() => {
+    let sumP = 0;
+    if (pizzas.length >= 0) {
+      const sum = {
+        ...pizzas[0].price.map((element) => {
+          sumP = element + sumP;
+          return sumP;
+        }),
+      };
+      setSumPrice(sumP);
+    }
+  }, [pizzas]);
 
   const dispatch = useDispatch();
 
@@ -147,7 +161,7 @@ function Cart() {
             </span>
             <span>
               {" "}
-              Сумма заказа: <b>900 ₽</b>{" "}
+              Сумма заказа: <b>{sumPrice} ₽</b>{" "}
             </span>
           </div>
           <div class="cart__bottom-buttons">
