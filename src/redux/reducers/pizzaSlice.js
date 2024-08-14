@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 	pizzas: [{
         index: null,
+        counter: 0,
         size: [],
         type: [],
         price: [],

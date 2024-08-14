@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPizzaBlock } from "../../redux/reducers/counterSlice";
@@ -52,12 +50,12 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
 
     console.log("items", items);
     let newVar = items.map((el) => {
-      if (el.type.length >= 1 || el.size.length >= 1) {
+      if (el.index === id && (el.type.length >= 1 || el.size.length >= 1)) {
         return {
           ...el,
-          type: [...pizzas[0].type, activeType],
-          size: [...pizzas[0].size, activeSize],
-          price: [...pizzas[0].price, activePrice],
+          type: [...pizzas[id].type, activeType],
+          size: [...pizzas[id].size, activeSize],
+          price: [...pizzas[id].price, activePrice],
         };
       } else if (el.index === id) {
         return {
