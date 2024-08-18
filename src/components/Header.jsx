@@ -20,15 +20,15 @@ function Header() {
   }, [pizzasBlock]);
 
   useEffect(() => {
-    let sumP = 0;
-    // console.log("p ", pizzas);
     if (pizzas.length >= 0) {
-      const sum = {
-        ...pizzas[0].price.map((element) => {
-          sumP = element + sumP;
-          return sumP;
-        }),
-      };
+      const sum = pizzas.map((el) => {
+        return el.price.reduce((acc, pizza) => {
+          return acc + pizza;
+        }, 0);
+      });
+      const sumP = sum.reduce((acc, price) => {
+        return acc + price;
+      }, 0);
       setSumPrice(sumP);
     }
   }, [pizzas]);

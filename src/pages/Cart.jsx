@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import imgTrash from "../assets/img/trash.svg";
@@ -18,23 +20,16 @@ function Cart() {
   }, [pizzasBlock]);
 
   useEffect(() => {
-    let sumP = 0;
     if (pizzas.length >= 0) {
-      const sumuy = 
-        pizzas.map((el) => { 
-          return el.price.reduce((acc, pizza) => {
-            console.log('pizza ', pizza)
-            console.log('acc ', acc)
-            return acc + pizza
-          }, 0)
-        }
-        // ...pizzas[0].price.map((element) => {
-        //   sumP = element + sumP;
-        //   console.log('f', pizzas)
-        //   return sumP;
-        // }),
-      )
-      setSumPrice(sumuy);
+      const sumuy = pizzas.map((el) => {
+        return el.price.reduce((acc, pizza) => {
+          return acc + pizza;
+        }, 0);
+      });
+      const summy = sumuy.reduce((acc, el) => {
+        return acc + el;
+      }, 0);
+      setSumPrice(summy);
     }
   }, [pizzas]);
 
@@ -50,11 +45,9 @@ function Cart() {
       } else {
         return el;
       }
-    })
+    });
     // dispatch(setPizzaBlock(counts))
-  }
-
-  // useEffect(() => {}, [pizzas]);
+  };
 
   return (
     <div class="container container--cart">
@@ -98,10 +91,10 @@ function Cart() {
           </div>
         </div>
         <div class="content__items">
-          {
-            pizzas.map((el) => {
-              if(el.price.length > 0) {
-               return <div class="cart__item" key={el}>
+          {pizzas.map((el) => {
+            if (el.price.length > 0) {
+              return (
+                <div class="cart__item" key={el}>
                   <div class="cart__item-img">
                     <img
                       class="pizza-block__image"
@@ -111,7 +104,9 @@ function Cart() {
                   </div>
                   <div class="cart__item-info">
                     <h3>Сырный цыпленок</h3>
-                    <p>{el.type}, {el.size} см.</p>
+                    <p>
+                      {el.type}, {el.size} см.
+                    </p>
                   </div>
                   <div class="cart__item-count">
                     <div class="button button--outline button--circle cart__item-count-minus">
@@ -133,7 +128,10 @@ function Cart() {
                       </svg>
                     </div>
                     <b>2</b>
-                    <div onClick={handleCountPlus(el.index)} class="button button--outline button--circle cart__item-count-plus">
+                    <div
+                      onClick={handleCountPlus(el.index)}
+                      class="button button--outline button--circle cart__item-count-plus"
+                    >
                       <svg
                         width="10"
                         height="10"
@@ -176,12 +174,11 @@ function Cart() {
                     </div>
                   </div>
                 </div>
-              } else {
-                return <></>
-              }
-            })
-          }
-
+              );
+            } else {
+              return <></>;
+            }
+          })}
         </div>
         <div class="cart__bottom">
           <div class="cart__bottom-details">
