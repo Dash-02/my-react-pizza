@@ -35,19 +35,23 @@ function Cart() {
 
   const dispatch = useDispatch();
 
-  const handleCountPlus = (id) => {
-    const counts = pizzasBlock.map((el) => {
-      if (el.index === id) {
-        return {
-          ...el,
-          counter: el.counter + 1,
-        };
-      } else {
-        return el;
-      }
-    });
-    // dispatch(setPizzaBlock(counts))
-  };
+  // const handleCountPlus = (id) => {
+  //   const counts = pizzasBlock.map((el) => {
+  //     if (el.index === id) {
+  //       return {
+  //         ...el,
+  //         counter: el.counter + 1,
+  //       };
+  //     } else {
+  //       return el;
+  //     }
+  //   });
+  //   // dispatch(setPizzaBlock(counts))
+  // };
+
+  // const pizzaCart = pizzas.map((pizza, index) => {
+  //   return pizza;
+  // });
 
   return (
     <div class="container container--cart">
@@ -129,7 +133,7 @@ function Cart() {
                     </div>
                     <b>2</b>
                     <div
-                      onClick={handleCountPlus(el.index)}
+                      // onClick={handleCountPlus(el.index)}
                       class="button button--outline button--circle cart__item-count-plus"
                     >
                       <svg

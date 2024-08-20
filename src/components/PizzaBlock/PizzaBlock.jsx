@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPizzaBlock } from "../../redux/reducers/counterSlice";
