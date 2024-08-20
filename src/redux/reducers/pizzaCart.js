@@ -1,24 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    pizzasCart: {
+    pizzasCart: [{
         index: null,
         couunter: 0,
+        title: '',
+        image: '',
         size: null,
         type: null,
         price: null,
-    }
+    }]
 }
 
 const pizzaCartSlice = createSlice({
-    name: 'pizzaCart',
+    name: 'pizzasCart',
     initialState,
     reducers: {
-        setPizaCart(state, action){
-            state.pizzaCart = action.payload
+        setPizzaCart(state, action){
+            state.pizzasCart = action.payload
         },
     },
 })
 
-export const {setPizaCart} = pizzaCartSlice.actions
+export const {setPizzaCart} = pizzaCartSlice.actions
 export default pizzaCartSlice;

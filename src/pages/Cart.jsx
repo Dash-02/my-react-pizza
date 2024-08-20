@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import imgTrash from "../assets/img/trash.svg";
-import { setPizzaBlock } from "../redux/reducers/counterSlice";
+import { setPizzaCart } from "../redux/reducers/pizzaCart";
 
 function Cart() {
   let [sumPrice, setSumPrice] = useState(0);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
+  // const { pizzasCart } = useSelector((state) => state.pizaCartSlice);
   const [sumCount, setSumCount] = useState(0);
 
   useEffect(() => {
@@ -49,9 +50,26 @@ function Cart() {
   //   // dispatch(setPizzaBlock(counts))
   // };
 
-  // const pizzaCart = pizzas.map((pizza, index) => {
-  //   return pizza;
-  // });
+  useEffect(() => {
+    const pizzaCart = pizzas.map((pizza, index) => {
+      if (pizza.price.length > 1) {
+        if (pizza.price[index]) {
+        }
+        return {
+          ...pizza,
+          title: pizza.title,
+          image: pizza.imageUrl,
+          type: 0,
+          size: 0,
+          price: pizza.price,
+        };
+      } else {
+        return pizza;
+      }
+    });
+    console.log("cart ", pizzaCart);
+    dispatch(setPizzaCart(pizzaCart));
+  }, [pizzas]);
 
   return (
     <div class="container container--cart">

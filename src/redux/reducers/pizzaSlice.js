@@ -4,6 +4,8 @@ const initialState = {
 	pizzas: [{
         index: null,
         counter: 0,
+        title: '',
+        image: '',
         size: [],
         type: [],
         price: [],

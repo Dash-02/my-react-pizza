@@ -40,6 +40,8 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
           ...el,
           index: el.index,
           counter: el.counter,
+          title: "",
+          image: "",
           type: [],
           size: [],
           price: [],
@@ -55,6 +57,8 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
       if (el.index === id && (el.type.length >= 1 || el.size.length >= 1)) {
         return {
           ...el,
+          title: title,
+          image: imageUrl,
           type: [...pizzas[id].type, activeType],
           size: [...pizzas[id].size, activeSize],
           price: [...pizzas[id].price, activePrice],
@@ -62,6 +66,8 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
       } else if (el.index === id) {
         return {
           ...el,
+          title: title,
+          image: imageUrl,
           type: [activeType],
           size: [activeSize],
           price: [activePrice],
