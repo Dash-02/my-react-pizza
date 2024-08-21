@@ -50,50 +50,59 @@ function Cart() {
   // };
 
   useEffect(() => {
-    const items = pizzas.map((pizza, index) => {
+    const items = pizzas.map((pizza) => {
       if (pizza.price.length > 1) {
-        // if (pizza.price[index]) {
-        //   console.log("совпадают цены");
-        // } else if (pizza.price[index] !== ) {
-        //   console.log("разные цены");
-        // }
+        return {
+          ...pizza.price.map((el, index) => {
+            if (el === pizza.price[index]) {
+              //пицца с 1 ценой попалась 1й раз
+              // console.log("price[index] ", pizza.price[index]);
+              // console.log("совпадают цены", el);
 
-        pizza.price.map((el) => {
-          if (el === pizza.price[index] && pizza.counter <= 1) {
-            // console.log("price[index] ", pizza.price[index]);
-            // console.log("совпадают цены", el);
-            console.log("pizza1 ", pizza);
-            return {
-              ...pizza,
-              price: pizza.price[index],
-              counter: pizza.counter + 1,
-            };
-          } else if (el === pizza.price[index] && pizza.counter > 1) {
-            console.log("pizza2 ", pizza);
-            return {
-              ...pizza,
-              counter: pizza.counter + 1,
-            };
-          } else {
-            // console.log("price[index] ", pizza.price[index]);
-            // console.log("разные цены", el);
-            console.log("pizza3 ", pizza);
-            return {
-              // ...pizza,
-              // price: el,
-            };
-          }
-        });
+              console.log("index1 ", index);
+              console.log("pizza1 ", pizza);
+              return {
+                ...pizza,
+                price: pizza.price[index],
+                counter: pizza.counter + 1,
+                type: pizza.type[index],
+                size: pizza.size[index],
+              };
+            }
+            // else if (el === pizza.price[index] && pizza.counter > 1) {
+            //   //пицца с 1 ценой попалась более 1го раза
+            //   console.log("pizza2 ", pizza);
+            //   return {
+            //     ...pizza,
+            //     counter: pizza.counter + 1,
+            //   };
+            // }
+            else {
+              //когда пицца не повторяется
+              // console.log("price[index] ", pizza.price[index]);
+              // console.log("разные цены", el);
+              console.log("pizza3 ", pizza);
+              console.log("index3 ", index);
+              return {
+                ...pizza,
+                price: el,
+                type: pizza.type[index],
+                size: pizza.size[index],
+              };
+            }
+          }),
+        };
+      } else if (pizza.price.length < 1) {
+        return pizza;
+      } else {
         return {
           ...pizza,
+          counter: 1,
           title: pizza.title,
-          image: pizza.imageUrl,
-          type: pizza.type[index],
-          size: pizza.size[index],
-          price: pizza.price[index],
+          type: pizza.type[0],
+          size: pizza.size[0],
+          price: pizza.price[0],
         };
-      } else {
-        return pizza;
       }
     });
     console.log("cart ", items);
@@ -143,7 +152,7 @@ function Cart() {
         </div>
         <div class="content__items">
           {pizzasCart.map((el) => {
-            if (el.price > 0) {
+            if (el.index !== null && el.price > 0) {
               return (
                 <div class="cart__item" key={el}>
                   <div class="cart__item-img">
