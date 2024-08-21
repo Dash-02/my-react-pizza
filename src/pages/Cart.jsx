@@ -9,8 +9,9 @@ function Cart() {
   let [sumPrice, setSumPrice] = useState(0);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
-  // const { pizzasCart } = useSelector((state) => state.pizaCartSlice);
+  const { pizzasCart } = useSelector((state) => state.pizzaCartSlice);
   const [sumCount, setSumCount] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let sum = 0;
@@ -34,8 +35,6 @@ function Cart() {
     }
   }, [pizzas]);
 
-  const dispatch = useDispatch();
-
   // const handleCountPlus = (id) => {
   //   const counts = pizzasBlock.map((el) => {
   //     if (el.index === id) {
@@ -51,24 +50,54 @@ function Cart() {
   // };
 
   useEffect(() => {
-    const pizzaCart = pizzas.map((pizza, index) => {
+    const items = pizzas.map((pizza, index) => {
       if (pizza.price.length > 1) {
-        if (pizza.price[index]) {
-        }
+        // if (pizza.price[index]) {
+        //   console.log("совпадают цены");
+        // } else if (pizza.price[index] !== ) {
+        //   console.log("разные цены");
+        // }
+
+        pizza.price.map((el) => {
+          if (el === pizza.price[index] && pizza.counter <= 1) {
+            // console.log("price[index] ", pizza.price[index]);
+            // console.log("совпадают цены", el);
+            console.log("pizza1 ", pizza);
+            return {
+              ...pizza,
+              price: pizza.price[index],
+              counter: pizza.counter + 1,
+            };
+          } else if (el === pizza.price[index] && pizza.counter > 1) {
+            console.log("pizza2 ", pizza);
+            return {
+              ...pizza,
+              counter: pizza.counter + 1,
+            };
+          } else {
+            // console.log("price[index] ", pizza.price[index]);
+            // console.log("разные цены", el);
+            console.log("pizza3 ", pizza);
+            return {
+              // ...pizza,
+              // price: el,
+            };
+          }
+        });
         return {
           ...pizza,
           title: pizza.title,
           image: pizza.imageUrl,
-          type: 0,
-          size: 0,
-          price: pizza.price,
+          type: pizza.type[index],
+          size: pizza.size[index],
+          price: pizza.price[index],
         };
       } else {
         return pizza;
       }
     });
-    console.log("cart ", pizzaCart);
-    dispatch(setPizzaCart(pizzaCart));
+    console.log("cart ", items);
+    dispatch(setPizzaCart(items));
   }, [pizzas]);
 
   return (
@@ -113,19 +142,19 @@ function Cart() {
           </div>
         </div>
         <div class="content__items">
-          {pizzas.map((el) => {
-            if (el.price.length > 0) {
+          {pizzasCart.map((el) => {
+            if (el.price > 0) {
               return (
                 <div class="cart__item" key={el}>
                   <div class="cart__item-img">
                     <img
                       class="pizza-block__image"
-                      src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+                      src={el.imageUrl}
                       alt="Pizza"
                     />
                   </div>
                   <div class="cart__item-info">
-                    <h3>Сырный цыпленок</h3>
+                    <h3>{el.title}</h3>
                     <p>
                       {el.type}, {el.size} см.
                     </p>
@@ -149,7 +178,7 @@ function Cart() {
                         ></path>
                       </svg>
                     </div>
-                    <b>2</b>
+                    <b>{el.counter}</b>
                     <div
                       // onClick={handleCountPlus(el.index)}
                       class="button button--outline button--circle cart__item-count-plus"

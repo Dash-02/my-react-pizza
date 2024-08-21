@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
     pizzasCart: [{
         index: null,
-        couunter: 0,
+        counter: 0,
         title: '',
         image: '',
         size: null,
@@ -23,4 +23,4 @@ const pizzaCartSlice = createSlice({
 })
 
 export const {setPizzaCart} = pizzaCartSlice.actions
-export default pizzaCartSlice;
+export default pizzaCartSlice.reducer;
