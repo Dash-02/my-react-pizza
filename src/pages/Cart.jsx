@@ -59,8 +59,8 @@ function Cart() {
             if (pizza.price.indexOf(el) === index) {
               console.log("index1 el ", index);
               console.log("index1 pizza  ", index1);
-              console.log("pizza1 el ", el);
-              console.log("pizza1 ", pizza.price[index1]);
+              // console.log("pizza1 el ", el);
+              // console.log("pizza1 ", pizza.price[index1]);
               combinedPizza = {
                 ...pizza,
                 price: pizza.price[index],
@@ -127,8 +127,11 @@ function Cart() {
       }
     });
     console.log("cart ", items);
-    // const uniqueSet = new Set(items);
-    dispatch(setPizzaCart(items));
+    // const piz = items.map((it, index) => {
+    //   return Object.values(items[index]);
+    // });
+    const piz1 = Object.values(items[0]);
+    dispatch(setPizzaCart(piz1));
   }, [pizzas]);
 
   return (
@@ -172,11 +175,24 @@ function Cart() {
             <span>Очистить корзину</span>
           </div>
         </div>
+        {/* <div class="content__items">
+          {piz.map((element) => {
+            return (
+              <div class="cart__item" key={element.index}>
+                <p>
+                  {element.type}, {element.size} см.
+                </p>
+              </div>
+            );
+          })}
+        </div> */}
+
         <div class="content__items">
           {pizzasCart.map((el) => {
             if (el.index !== null && el.price > 0) {
+              // element.map((el) => {
               return (
-                <div class="cart__item" key={el}>
+                <div class="cart__item" key={el.index}>
                   <div class="cart__item-img">
                     <img
                       class="pizza-block__image"
@@ -257,9 +273,11 @@ function Cart() {
                   </div>
                 </div>
               );
+              // });
             } else {
               return <></>;
             }
+            // });
           })}
         </div>
         <div class="cart__bottom">
