@@ -89,27 +89,16 @@ function Cart() {
               // };
               combinedPizza.counter += 1;
               // return combinedPizza;
-              // return {
-              //   ...pizza,
-              //   // price: pizza.price[index],
-              //   counter: pizza.counter + 1,
-              //   // type: pizza.type[index],
-              //   // size: pizza.size[index],
-              // };
+              return {
+                ...pizza,
+                counter: 0,
+                title: "",
+                image: "",
+                type: 0,
+                size: 0,
+                price: 0,
+              };
             }
-            // else {
-            //   //когда пицца не повторяется
-            //   //не нужно
-            //   console.log("pizza3 ", pizza);
-            //   console.log("index3 ", index);
-            //   combinedPizza = {
-            //     ...pizza,
-            //     price: el,
-            //     counter: 1,
-            //     type: pizza.type[index],
-            //     size: pizza.size[index],
-            //   };
-            // }
             return combinedPizza;
           }),
         };
@@ -126,8 +115,34 @@ function Cart() {
         };
       }
     });
-    console.log("cart ", items);
+    // const n = items.map((pizza, index) => {
+    //   if (pizza.price !== 0) {
+    //     //let combinedPizza = null;
 
+    //     // if (pizza.price.indexOf(el) === index) {
+    //     // Проверяем, есть ли цена в uniquePrices
+    //     if (!uniquePrices[pizza.price]) {
+    //       uniquePrices[pizza.price] = true; // Добавляем цену в uniquePrices
+    //       return pizza;
+    //     } else {
+    //       // Если цена уже есть в uniquePrices, увеличиваем counter
+    //       return {
+    //         ...pizza,
+    //         counter: 0,
+    //         title: "",
+    //         type: 0,
+    //         size: 0,
+    //         price: 0,
+    //       };
+    //     }
+
+    //     //return combinedPizza;
+    //   }
+    //   //),
+    // });
+    // console.log("ggggg", uniquePrices);
+    // console.log("NNN", n);
+    console.log("cart ", items);
     dispatch(setPizzaCart(items));
   }, [pizzas]);
 
@@ -182,8 +197,12 @@ function Cart() {
               element.counter == null
             ) {
               console.log("l1", element);
-              return Object.values(element).map((el) => {
+              return Object.values(element).map((el, index) => {
+                // console.log("pppppp", element[index].price);
+                // console.log("eeelll", el.price);
+
                 if (el.counter > 0) {
+                  //el.price !== element[index].price | && !displayedPrices.has(el.price)
                   return (
                     <div class="cart__item" key={el.index}>
                       <div class="cart__item-img">
