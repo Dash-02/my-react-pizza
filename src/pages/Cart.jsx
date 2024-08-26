@@ -49,99 +49,88 @@ function Cart() {
   //   // dispatch(setPizzaBlock(counts))
   // };
 
+  // useEffect(() => {
+  //   const items = pizzas.map((pizza, index1) => {
+  //     if (pizza.price.length > 1) {
+  //       let combinedPizza = null;
+  //       return {
+  //         ...pizza.price.map((el, index) => {
+  //           if (pizza.price.indexOf(el) === index) {
+  //             combinedPizza = {
+  //               ...pizza,
+  //               price: pizza.price[index],
+  //               counter: 1,
+  //               type: pizza.type[index],
+  //               size: pizza.size[index],
+  //             };
+  //           } else if (el === pizza.price[index]) {
+  //             //пицца с 1 ценой попалась более 1го раза
+  //             combinedPizza.counter += 1;
+  //             return {
+  //               ...pizza,
+  //               counter: 0,
+  //               title: "",
+  //               image: "",
+  //               type: 0,
+  //               size: 0,
+  //               price: 0,
+  //             };
+  //           }
+  //           return combinedPizza;
+  //         }),
+  //       };
+  //     } else if (pizza.price.length < 1) {
+  //       return pizza;
+  //     } else {
+  //       return {
+  //         ...pizza,
+  //         counter: 1,
+  //         title: pizza.title,
+  //         type: pizza.type[0],
+  //         size: pizza.size[0],
+  //         price: pizza.price[0],
+  //       };
+  //     }
+  //   });
+  //   console.log("cart ", items);
+  //   dispatch(setPizzaCart(items));
+  // }, [pizzas]);
+
   useEffect(() => {
-    const items = pizzas.map((pizza, index1) => {
+    const items = [];
+    const priceCounter = {}; // Объект для хранения счетчиков по уникальным ценам
+
+    pizzas.forEach((pizza) => {
       if (pizza.price.length > 1) {
-        let combinedPizza = null;
-        return {
-          ...pizza.price.map((el, index) => {
-            // if (el === pizza.price[index]) {
-            if (pizza.price.indexOf(el) === index) {
-              console.log("index1 el ", index);
-              console.log("index1 pizza  ", index1);
-              // console.log("pizza1 el ", el);
-              // console.log("pizza1 ", pizza.price[index1]);
-              combinedPizza = {
-                ...pizza,
-                price: pizza.price[index],
-                counter: 1,
-                type: pizza.type[index],
-                size: pizza.size[index],
-              };
-              // return {
-              //   ...pizza,
-              //   price: pizza.price[index],
-              //   // counter: pizza.counter + 1,
-              //   type: pizza.type[index],
-              //   size: pizza.size[index],
-              // };
-              // return combinedPizza;
-            } else if (el === pizza.price[index]) {
-              //пицца с 1 ценой попалась более 1го раза
-              console.log("pizza2 ", pizza);
-              console.log("index2 ", index);
-              // combinedPizza = {
-              //   ...pizza,
-              //   price: pizza.price[index],
-              //   counter: pizza.counter + 1,
-              //   type: pizza.type[index],
-              //   size: pizza.size[index],
-              // };
-              combinedPizza.counter += 1;
-              // return combinedPizza;
-              return {
-                ...pizza,
-                counter: 0,
-                title: "",
-                image: "",
-                type: 0,
-                size: 0,
-                price: 0,
-              };
-            }
-            return combinedPizza;
-          }),
-        };
+        pizza.price.forEach((el, index) => {
+          if (!priceCounter[el]) {
+            priceCounter[el] = {
+              ...pizza,
+              price: el,
+              counter: 1,
+              type: pizza.type[index],
+              size: pizza.size[index],
+            };
+            items.push(priceCounter[el]); // Добавляем уникальную цену в массив items
+          } else {
+            // Если цена уже существует, увеличиваем счетчик
+            priceCounter[el].counter += 1;
+          }
+        });
       } else if (pizza.price.length < 1) {
-        return pizza;
+        items.push(pizza); // Если нет цен, просто добавляем пиццу
       } else {
-        return {
+        items.push({
           ...pizza,
           counter: 1,
           title: pizza.title,
           type: pizza.type[0],
           size: pizza.size[0],
           price: pizza.price[0],
-        };
+        });
       }
     });
-    // const n = items.map((pizza, index) => {
-    //   if (pizza.price !== 0) {
-    //     //let combinedPizza = null;
 
-    //     // if (pizza.price.indexOf(el) === index) {
-    //     // Проверяем, есть ли цена в uniquePrices
-    //     if (!uniquePrices[pizza.price]) {
-    //       uniquePrices[pizza.price] = true; // Добавляем цену в uniquePrices
-    //       return pizza;
-    //     } else {
-    //       // Если цена уже есть в uniquePrices, увеличиваем counter
-    //       return {
-    //         ...pizza,
-    //         counter: 0,
-    //         title: "",
-    //         type: 0,
-    //         size: 0,
-    //         price: 0,
-    //       };
-    //     }
-
-    //     //return combinedPizza;
-    //   }
-    //   //),
-    // });
-    // console.log("ggggg", uniquePrices);
-    // console.log("NNN", n);
     console.log("cart ", items);
     dispatch(setPizzaCart(items));
   }, [pizzas]);
@@ -194,99 +183,90 @@ function Cart() {
               Object.keys(element).length > 0 &&
               element.index !== null &&
               typeof Object.keys(element) === "object" &&
-              element.counter == null
+              element.counter > 0
             ) {
-              console.log("l1", element);
-              return Object.values(element).map((el, index) => {
-                // console.log("pppppp", element[index].price);
-                // console.log("eeelll", el.price);
-
-                if (el.counter > 0) {
-                  //el.price !== element[index].price | && !displayedPrices.has(el.price)
-                  return (
-                    <div class="cart__item" key={el.index}>
-                      <div class="cart__item-img">
-                        <img
-                          class="pizza-block__image"
-                          src={el.imageUrl}
-                          alt="Pizza"
-                        />
-                      </div>
-                      <div class="cart__item-info">
-                        <h3>{el.title}</h3>
-                        <p>
-                          {el.type}, {el.size} см.
-                        </p>
-                      </div>
-                      <div class="cart__item-count">
-                        <div class="button button--outline button--circle cart__item-count-minus">
-                          <svg
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
-                              fill="#EB5A1E"
-                            ></path>
-                            <path
-                              d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
-                              fill="#EB5A1E"
-                            ></path>
-                          </svg>
-                        </div>
-                        <b>{el.counter}</b>
-                        <div
-                          // onClick={handleCountPlus(el.index)}
-                          class="button button--outline button--circle cart__item-count-plus"
-                        >
-                          <svg
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
-                              fill="#EB5A1E"
-                            ></path>
-                            <path
-                              d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
-                              fill="#EB5A1E"
-                            ></path>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="cart__item-price">
-                        <b>{el.price} ₽</b>
-                      </div>
-                      <div class="cart__item-remove">
-                        <div class="button button--outline button--circle">
-                          <svg
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
-                              fill="#EB5A1E"
-                            ></path>
-                            <path
-                              d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
-                              fill="#EB5A1E"
-                            ></path>
-                          </svg>
-                        </div>
-                      </div>
+              return (
+                <div class="cart__item" key={element.index}>
+                  <div class="cart__item-img">
+                    <img
+                      class="pizza-block__image"
+                      src={element.imageUrl}
+                      alt="Pizza"
+                    />
+                  </div>
+                  <div class="cart__item-info">
+                    <h3>{element.title}</h3>
+                    <p>
+                      {element.type}, {element.size} см.
+                    </p>
+                  </div>
+                  <div class="cart__item-count">
+                    <div class="button button--outline button--circle cart__item-count-minus">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
+                          fill="#EB5A1E"
+                        ></path>
+                        <path
+                          d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
+                          fill="#EB5A1E"
+                        ></path>
+                      </svg>
                     </div>
-                  );
-                }
-              });
+                    <b>{element.counter}</b>
+                    <div
+                      // onClick={handleCountPlus(el.index)}
+                      class="button button--outline button--circle cart__item-count-plus"
+                    >
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
+                          fill="#EB5A1E"
+                        ></path>
+                        <path
+                          d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
+                          fill="#EB5A1E"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="cart__item-price">
+                    <b>{element.price} ₽</b>
+                  </div>
+                  <div class="cart__item-remove">
+                    <div class="button button--outline button--circle">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
+                          fill="#EB5A1E"
+                        ></path>
+                        <path
+                          d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z"
+                          fill="#EB5A1E"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              );
             } else if (element.counter === 1) {
               return (
                 <div class="cart__item" key={element.index}>
