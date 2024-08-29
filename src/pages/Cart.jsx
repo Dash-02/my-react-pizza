@@ -3,7 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import imgTrash from "../assets/img/trash.svg";
-import { setPizzaCart } from "../redux/reducers/pizzaCart";
+import {
+  setClearCart,
+  setCountCart,
+  setCountCartMinus,
+  setPizzaCart,
+  setRemovePizza,
+} from "../redux/reducers/pizzaCart";
+import { setCount } from "../redux/reducers/counterSlice";
+import { setPrices } from "../redux/reducers/pizzaSlice";
 
 function Cart() {
   let [sumPrice, setSumPrice] = useState(0);
@@ -12,6 +20,7 @@ function Cart() {
   const { pizzasCart } = useSelector((state) => state.pizzaCartSlice);
   const [sumCount, setSumCount] = useState(0);
   const dispatch = useDispatch();
+  const [isClicked, setIsClicked] = useState(0);
 
   useEffect(() => {
     let sum = 0;
@@ -22,32 +31,46 @@ function Cart() {
   }, [pizzasBlock]);
 
   useEffect(() => {
-    if (pizzas.length >= 0) {
-      const sumuy = pizzas.map((el) => {
-        return el.price.reduce((acc, pizza) => {
-          return acc + pizza;
-        }, 0);
-      });
-      const summy = sumuy.reduce((acc, el) => {
-        return acc + el;
+    if (pizzasCart.length >= 0) {
+      const sumuy = pizzasCart.reduce((acc, pizza) => {
+        if (pizza.price > 0) {
+          return acc + pizza.price * pizza.counter;
+        } else {
+          return acc;
+        }
       }, 0);
-      setSumPrice(summy);
+      setSumPrice(sumuy);
     }
-  }, [pizzas]);
+  }, [pizzasCart]);
 
-  // const handleCountPlus = (id) => {
-  //   const counts = pizzasBlock.map((el) => {
-  //     if (el.index === id) {
-  //       return {
-  //         ...el,
-  //         counter: el.counter + 1,
-  //       };
-  //     } else {
-  //       return el;
-  //     }
-  //   });
-  //   // dispatch(setPizzaBlock(counts))
-  // };
+  const handleClicked = (arg) => {
+    dispatch(setCountCart(arg));
+    setIsClicked(isClicked + 1);
+  };
+
+  const handleClickedMinus = (arg) => {
+    dispatch(setCountCartMinus(arg));
+    setIsClicked(isClicked + 1);
+  };
+
+  const handleRemove = (arg) => {
+    dispatch(setRemovePizza(arg));
+    setIsClicked(isClicked + 1);
+  };
+
+  const handleClearAll = () => {
+    dispatch(setClearCart());
+    console.log(pizzasCart.length);
+    if (pizzasCart.length > 0) {
+      setIsClicked(isClicked + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (isClicked > 0) {
+      dispatch(setCount(pizzasCart));
+    }
+  }, [isClicked]);
 
   // useEffect(() => {
   //   const items = pizzas.map((pizza, index1) => {
@@ -131,8 +154,12 @@ function Cart() {
       }
     });
 
-    console.log("cart ", items);
-    dispatch(setPizzaCart(items));
+    const lrt = items.map((pizza, index) => {
+      return { ...pizza, index: index };
+    });
+
+    console.log("cart ", lrt);
+    dispatch(setPizzaCart(lrt));
   }, [pizzas]);
 
   return (
@@ -171,7 +198,7 @@ function Cart() {
             </svg>
             Корзина
           </h2>
-          <div class="cart__clear">
+          <div onClick={() => handleClearAll()} class="cart__clear">
             <img src={imgTrash} alt="" />
             <span>Очистить корзину</span>
           </div>
@@ -201,7 +228,10 @@ function Cart() {
                     </p>
                   </div>
                   <div class="cart__item-count">
-                    <div class="button button--outline button--circle cart__item-count-minus">
+                    <div
+                      onClick={() => handleClickedMinus(element.index)}
+                      class="button button--outline button--circle cart__item-count-minus"
+                    >
                       <svg
                         width="10"
                         height="10"
@@ -221,7 +251,7 @@ function Cart() {
                     </div>
                     <b>{element.counter}</b>
                     <div
-                      // onClick={handleCountPlus(el.index)}
+                      onClick={() => handleClicked(element.index)}
                       class="button button--outline button--circle cart__item-count-plus"
                     >
                       <svg
@@ -245,7 +275,10 @@ function Cart() {
                   <div class="cart__item-price">
                     <b>{element.price} ₽</b>
                   </div>
-                  <div class="cart__item-remove">
+                  <div
+                    onClick={() => handleRemove(element.index)}
+                    class="cart__item-remove"
+                  >
                     <div class="button button--outline button--circle">
                       <svg
                         width="10"
@@ -284,7 +317,10 @@ function Cart() {
                     </p>
                   </div>
                   <div class="cart__item-count">
-                    <div class="button button--outline button--circle cart__item-count-minus">
+                    <div
+                      onClick={() => handleClickedMinus(element.index)}
+                      class="button button--outline button--circle cart__item-count-minus"
+                    >
                       <svg
                         width="10"
                         height="10"
@@ -304,7 +340,7 @@ function Cart() {
                     </div>
                     <b>{element.counter}</b>
                     <div
-                      // onClick={handleCountPlus(el.index)}
+                      onClick={() => handleClicked(element.index)}
                       class="button button--outline button--circle cart__item-count-plus"
                     >
                       <svg
@@ -328,7 +364,10 @@ function Cart() {
                   <div class="cart__item-price">
                     <b>{element.price} ₽</b>
                   </div>
-                  <div class="cart__item-remove">
+                  <div
+                    onClick={() => handleRemove(element.index)}
+                    class="cart__item-remove"
+                  >
                     <div class="button button--outline button--circle">
                       <svg
                         width="10"

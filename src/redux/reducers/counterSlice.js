@@ -20,9 +20,12 @@ const initialState = {
 	reducers: {
 		setPizzaBlock(state, action) {
 			state.pizzasBlock = action.payload
-		}
+		},
+		setCount(state, action) {
+			state.pizzasBlock = action.payload
+		},
 	},
 })
 
-export const { setPizzaBlock } =  counterSlice.actions
+export const { setPizzaBlock, setCount } =  counterSlice.actions
 export default counterSlice.reducer
