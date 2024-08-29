@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 function Header() {
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
+  const { pizzasCart } = useSelector((state) => state.pizzaCartSlice);
   let [sumCount, setSumCount] = useState(0);
   let [sumPrice, setSumPrice] = useState(0);
   useEffect(() => {
@@ -20,18 +21,18 @@ function Header() {
   }, [pizzasBlock]);
 
   useEffect(() => {
-    if (pizzas.length >= 0) {
-      const sum = pizzas.map((el) => {
-        return el.price.reduce((acc, pizza) => {
-          return acc + pizza;
-        }, 0);
-      });
-      const sumP = sum.reduce((acc, price) => {
-        return acc + price;
+    if (pizzasCart.length >= 0) {
+      const sumuy = pizzasCart.reduce((acc, pizza) => {
+        if (pizza.price > 0) {
+          return acc + pizza.price * pizza.counter;
+        } else {
+          return acc;
+        }
       }, 0);
-      setSumPrice(sumP);
+      setSumPrice(sumuy);
+      console.log("test");
     }
-  }, [pizzas]);
+  }, [pizzasCart]);
 
   return (
     <div className="header">
