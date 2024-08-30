@@ -15,14 +15,16 @@ import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
 function Home() {
   let [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [categoryId, setCategoryId] = React.useState(0);
+  const [sort, setSort] = React.useState(0);
 
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(fetchPizza());
-  }, []);
+    dispatch(fetchPizza(categoryId));
+  }, [categoryId]);
   // console.log(data, status);
 
   useEffect(() => {
@@ -38,8 +40,11 @@ function Home() {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          value={categoryId}
+          onClickCategory={(id) => setCategoryId(id)}
+        />
+        <Sort value={sort} onClickSort={(i) => setSort(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
