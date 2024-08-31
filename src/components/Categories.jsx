@@ -3,13 +3,6 @@
 import React from "react";
 
 function Categories({ value, onClickCategory }) {
-  console.log("value", value);
-  // const [activeCategory, setActiveCategory] = React.useState(0);
-
-  // const onClickCategory = (param) => {
-  //   setActiveCategory(param);
-  // };
-
   const categories = [
     "Все",
     "Мясные",

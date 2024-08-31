@@ -21,6 +21,8 @@ function Cart() {
   const [sumCount, setSumCount] = useState(0);
   const dispatch = useDispatch();
   const [isClicked, setIsClicked] = useState(0);
+  const typeNames = ["тонкое", "традиционное"];
+  const sizeTypes = [26, 30, 40];
 
   useEffect(() => {
     let sum = 0;
@@ -224,7 +226,7 @@ function Cart() {
                   <div class="cart__item-info">
                     <h3>{element.title}</h3>
                     <p>
-                      {element.type}, {element.size} см.
+                      {typeNames[element.type]}, {sizeTypes[element.size]} см.
                     </p>
                   </div>
                   <div class="cart__item-count">
@@ -313,7 +315,7 @@ function Cart() {
                   <div class="cart__item-info">
                     <h3>{element.title}</h3>
                     <p>
-                      {element.type}, {element.size} см.
+                      {typeNames[element.type]}, {sizeTypes[element.size]} см.
                     </p>
                   </div>
                   <div class="cart__item-count">

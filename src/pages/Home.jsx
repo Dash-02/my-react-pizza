@@ -16,16 +16,22 @@ function Home() {
   let [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
-  const [sort, setSort] = React.useState(0);
+  const [sort, setSort] = React.useState({
+    nameSort: "популярности",
+    sortType: "rating",
+  });
 
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(fetchPizza(categoryId));
-  }, [categoryId]);
-  // console.log(data, status);
+    const strSort = String(sort.sortType);
+    // const strSort = JSON.stringify(sort.sortType);
+
+    // console.log(typeof strSort);
+    dispatch(fetchPizza({ categoryId, strSort }));
+  }, [categoryId, sort]);
 
   useEffect(() => {
     if (!data) {

@@ -4,13 +4,14 @@ import axios from 'axios'
 const initialState = {
     data: [],
     status: '',
-}
+} 
 
 export const fetchPizza = createAsyncThunk(
     'pizza/fetchPizza',
-    async (categoryId) => {
+    async ({categoryId, strSort}) => {
        
-        const response = await axios.get('https://65d118f5ab7beba3d5e4176b.mockapi.io/items?category=' + categoryId)
+        const response = await axios.get('https://65d118f5ab7beba3d5e4176b.mockapi.io/items?' +
+			`${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${strSort}&order=desc`)
         return response;
     }
   );
