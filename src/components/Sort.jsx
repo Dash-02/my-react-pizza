@@ -6,8 +6,11 @@ function Sort({ value, onClickSort }) {
   const [isVisible, setIsVisible] = React.useState(false);
   const sortList = [
     { nameSort: "популярности", sortType: "rating" },
+    { nameSort: "популярности asc", sortType: "-rating" },
     { nameSort: "цене", sortType: "price" },
+    { nameSort: "цене asc", sortType: "-price" },
     { nameSort: "алфавиту", sortType: "title" },
+    { nameSort: "алфавиту asc", sortType: "-title" },
   ];
 
   const onClickItem = (i) => {

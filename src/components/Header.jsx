@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import logoSvg from "../assets/img/pizza-logo.svg";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Search from "../pages/Search/Search";
 
 function Header() {
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
@@ -46,6 +47,7 @@ function Header() {
             </div>
           </div>
         </Link>
+        <Search />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>{sumPrice} ₽</span>
