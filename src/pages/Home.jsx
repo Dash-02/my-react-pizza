@@ -11,11 +11,13 @@ import Categories from "../components/Categories.jsx";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
 import SkeletonLoad from "../components/PizzaBlock/Skeleton.jsx";
 import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
+import Pagination from "../components/Pagination/Pagination.jsx";
 
 function Home({ search }) {
   let [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState({
     nameSort: "популярности",
     sortType: "rating",
@@ -31,8 +33,8 @@ function Home({ search }) {
 
   useEffect(() => {
     const strSort = String(sort.sortType);
-    dispatch(fetchPizza({ categoryId, strSort, search }));
-  }, [categoryId, sort, search]);
+    dispatch(fetchPizza({ categoryId, strSort, search, currentPage }));
+  }, [categoryId, sort, search, currentPage]);
 
   useEffect(() => {
     if (!data) {
@@ -59,6 +61,7 @@ function Home({ search }) {
         {status === "loading" && skeletons}
         {status === "success" && data && data.length > 0 && pizzaItems}
       </div>
+      <Pagination onChangePage={(num) => setCurrentPage(num)} />
     </div>
   );
 }
