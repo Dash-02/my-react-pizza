@@ -1,11 +1,14 @@
 /** @format */
 
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Search.module.scss";
 import searchImg from "../../assets/img/search.svg";
 import closeImg from "../../assets/img/close.svg";
+import { AppContext } from "../../App";
 
-const Search = ({ search, setSearch }) => {
+const Search = () => {
+  const { search, setSearch } = useContext(AppContext);
+
   return (
     <div className={styles.wrapperInput}>
       <img className={styles.imgSearch} src={searchImg} alt="search" />

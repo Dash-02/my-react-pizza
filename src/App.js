@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import './scss/app.scss';
 import {
   BrowserRouter as Router,
@@ -13,20 +13,23 @@ import Home from './pages/Home.jsx';
 import Cart from './pages/Cart.jsx';
 import NotFound from './pages/NotFound.jsx';
 
-function App() {
+export const AppContext = createContext('')
 
+function App() {
   const [search, setSearch] = useState('')
 
   return (
     <div className="wrapper">
-    <Header search={search} setSearch={setSearch} />
-    <div className="content">
-      <Routes>
-        <Route path="/" element={<Home search={search}/>}/>
-        <Route path="/cart" element={<Cart />}/>
-        <Route path="*" element={<NotFound />}/>
-      </Routes>
-    </div>
+    <AppContext.Provider value={{search, setSearch}}>
+     <Header />
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/cart" element={<Cart />}/>
+          <Route path="*" element={<NotFound />}/>
+        </Routes>
+      </div>
+    </AppContext.Provider>
   </div>
   );
 }

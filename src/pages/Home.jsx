@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FetchDataObjectSlice, {
   fetchPizza,
@@ -12,11 +12,14 @@ import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
 import SkeletonLoad from "../components/PizzaBlock/Skeleton.jsx";
 import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
 import Pagination from "../components/Pagination/Pagination.jsx";
+import { AppContext } from "../App.js";
+import { setFilter } from "../redux/reducers/filterSlice.js";
 
-function Home({ search }) {
+function Home() {
+  const { search, setSearch } = useContext(AppContext);
   let [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState({
     nameSort: "популярности",
@@ -25,6 +28,7 @@ function Home({ search }) {
 
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
+  const { filter } = useSelector((state) => state.filterSlice);
   const dispatch = useDispatch();
   const pizzaItems = data.map((element) => (
     <PizzaBlock key={element.id} {...element} />
@@ -33,8 +37,9 @@ function Home({ search }) {
 
   useEffect(() => {
     const strSort = String(sort.sortType);
+    const categoryId = filter.category;
     dispatch(fetchPizza({ categoryId, strSort, search, currentPage }));
-  }, [categoryId, sort, search, currentPage]);
+  }, [filter, sort, search, currentPage]);
 
   useEffect(() => {
     if (!data) {
@@ -49,10 +54,7 @@ function Home({ search }) {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          onClickCategory={(id) => setCategoryId(id)}
-        />
+        <Categories />
         <Sort value={sort} onClickSort={(i) => setSort(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
