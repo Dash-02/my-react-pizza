@@ -12,7 +12,7 @@ import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
 import SkeletonLoad from "../components/PizzaBlock/Skeleton.jsx";
 import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
 
-function Home() {
+function Home({ search }) {
   let [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
@@ -24,12 +24,19 @@ function Home() {
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const dispatch = useDispatch();
+  const pizzaItems = data
+    .filter((el) => {
+      if (el.title.toLowerCase().includes(search.toLowerCase())) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .map((element) => <PizzaBlock key={element.id} {...element} />);
+  const skeletons = [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />);
 
   React.useEffect(() => {
     const strSort = String(sort.sortType);
-    // const strSort = JSON.stringify(sort.sortType);
-
-    // console.log(typeof strSort);
     dispatch(fetchPizza({ categoryId, strSort }));
   }, [categoryId, sort]);
 
@@ -55,12 +62,8 @@ function Home() {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {status === "error" && <span>Server error</span>}
-        {status === "loading" &&
-          [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />)}
-        {status === "success" &&
-          data &&
-          data.length > 0 &&
-          data.map((element) => <PizzaBlock key={element.id} {...element} />)}
+        {status === "loading" && skeletons}
+        {status === "success" && data && data.length > 0 && pizzaItems}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Search from "../pages/Search/Search";
 
-function Header() {
+function Header({ search, setSearch }) {
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const { pizzas } = useSelector((state) => state.pizzaSlice);
   const { pizzasCart } = useSelector((state) => state.pizzaCartSlice);
@@ -47,7 +47,7 @@ function Header() {
             </div>
           </div>
         </Link>
-        <Search />
+        <Search search={search} setSearch={setSearch} />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>{sumPrice} ₽</span>
