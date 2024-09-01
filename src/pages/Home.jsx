@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FetchDataObjectSlice, {
   fetchPizza,
@@ -13,10 +13,10 @@ import SkeletonLoad from "../components/PizzaBlock/Skeleton.jsx";
 import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
 
 function Home({ search }) {
-  let [items, setItems] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sort, setSort] = React.useState({
+  let [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryId, setCategoryId] = useState(0);
+  const [sort, setSort] = useState({
     nameSort: "популярности",
     sortType: "rating",
   });
@@ -24,21 +24,15 @@ function Home({ search }) {
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
   const dispatch = useDispatch();
-  const pizzaItems = data
-    .filter((el) => {
-      if (el.title.toLowerCase().includes(search.toLowerCase())) {
-        return true;
-      } else {
-        return false;
-      }
-    })
-    .map((element) => <PizzaBlock key={element.id} {...element} />);
+  const pizzaItems = data.map((element) => (
+    <PizzaBlock key={element.id} {...element} />
+  ));
   const skeletons = [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const strSort = String(sort.sortType);
-    dispatch(fetchPizza({ categoryId, strSort }));
-  }, [categoryId, sort]);
+    dispatch(fetchPizza({ categoryId, strSort, search }));
+  }, [categoryId, sort, search]);
 
   useEffect(() => {
     if (!data) {

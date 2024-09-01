@@ -8,13 +8,15 @@ const initialState = {
 
 export const fetchPizza = createAsyncThunk(
     'pizza/fetchPizza',
-    async ({categoryId, strSort}) => {
+    async ({categoryId, strSort, search}) => {
        
 		const sortByConst = strSort.replaceAll('-', '');
 		const orderSort = strSort.includes('-') ? 'asc' : 'desc';
+		const category = categoryId > 0 ? `category=${categoryId}` : ''
+		const searchValue = search ? `search=${search}` : '';
 
         const response = await axios.get('https://65d118f5ab7beba3d5e4176b.mockapi.io/items?' +
-			`${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortByConst}&order=${orderSort}`)
+			`${category}${searchValue}&sortBy=${sortByConst}&order=${orderSort}`)
         return response;
     }
   );
