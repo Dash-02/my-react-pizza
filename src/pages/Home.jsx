@@ -21,10 +21,6 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [sort, setSort] = useState({
-    nameSort: "популярности",
-    sortType: "rating",
-  });
 
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
@@ -36,10 +32,10 @@ function Home() {
   const skeletons = [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />);
 
   useEffect(() => {
-    const strSort = String(sort.sortType);
+    const strSort = String(filter.sort.sortType);
     const categoryId = filter.category;
     dispatch(fetchPizza({ categoryId, strSort, search, currentPage }));
-  }, [filter, sort, search, currentPage]);
+  }, [filter, search, currentPage]);
 
   useEffect(() => {
     if (!data) {
@@ -55,7 +51,7 @@ function Home() {
     <div className="container">
       <div className="content__top">
         <Categories />
-        <Sort value={sort} onClickSort={(i) => setSort(i)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
