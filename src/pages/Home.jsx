@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FetchDataObjectSlice, {
   fetchPizza,
@@ -11,27 +11,31 @@ import Categories from "../components/Categories.jsx";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
 import SkeletonLoad from "../components/PizzaBlock/Skeleton.jsx";
 import { setPizzaBlock } from "../redux/reducers/counterSlice.js";
+import Pagination from "../components/Pagination/Pagination.jsx";
+import { AppContext } from "../App.js";
+import { setFilter } from "../redux/reducers/filterSlice.js";
 
 function Home() {
-  let [items, setItems] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sort, setSort] = React.useState({
-    nameSort: "популярности",
-    sortType: "rating",
-  });
+  const { search, setSearch } = useContext(AppContext);
+  let [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data, status } = useSelector((state) => state.fetchDataSlice);
   const { pizzasBlock } = useSelector((state) => state.counterSlice);
+  const { filter } = useSelector((state) => state.filterSlice);
   const dispatch = useDispatch();
+  const pizzaItems = data.map((element) => (
+    <PizzaBlock key={element.id} {...element} />
+  ));
+  const skeletons = [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />);
 
-  React.useEffect(() => {
-    const strSort = String(sort.sortType);
-    // const strSort = JSON.stringify(sort.sortType);
-
-    // console.log(typeof strSort);
-    dispatch(fetchPizza({ categoryId, strSort }));
-  }, [categoryId, sort]);
+  useEffect(() => {
+    const strSort = String(filter.sort.sortType);
+    const categoryId = filter.category;
+    dispatch(fetchPizza({ categoryId, strSort, search, currentPage }));
+  }, [filter, search, currentPage]);
 
   useEffect(() => {
     if (!data) {
@@ -46,22 +50,16 @@ function Home() {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          onClickCategory={(id) => setCategoryId(id)}
-        />
-        <Sort value={sort} onClickSort={(i) => setSort(i)} />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {status === "error" && <span>Server error</span>}
-        {status === "loading" &&
-          [...new Array(6)].map((_, id) => <SkeletonLoad key={id} />)}
-        {status === "success" &&
-          data &&
-          data.length > 0 &&
-          data.map((element) => <PizzaBlock key={element.id} {...element} />)}
+        {status === "loading" && skeletons}
+        {status === "success" && data && data.length > 0 && pizzaItems}
       </div>
+      <Pagination onChangePage={(num) => setCurrentPage(num)} />
     </div>
   );
 }

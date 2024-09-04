@@ -23,3 +23,16 @@
     top: 14px;
     left: 12px;
 }
+
+.imgClose {
+    width: 22px;
+    height: 22px;
+    opacity: 0.3;
+    position: absolute;
+    top: 14px;
+    left: 367px;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+    }
+}

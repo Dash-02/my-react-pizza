@@ -53,15 +53,15 @@ function PizzaBlock({ id, title, prices, imageUrl, sizes, types }) {
     }
 
     console.log("items", items);
-    let newVar = items.map((el) => {
+    let newVar = items.map((el, index) => {
       if (el.index === id && (el.type.length >= 1 || el.size.length >= 1)) {
         return {
           ...el,
           title: title,
           image: imageUrl,
-          type: [...pizzas[id].type, activeType],
-          size: [...pizzas[id].size, activeSize],
-          price: [...pizzas[id].price, activePrice],
+          type: [...pizzas[index].type, activeType],
+          size: [...pizzas[index].size, activeSize],
+          price: [...pizzas[index].price, activePrice],
         };
       } else if (el.index === id) {
         return {
